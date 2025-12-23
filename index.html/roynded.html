@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shrestha Bakery and Kirana Pasal - Freshly Baked Goodness & Essentials</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+  :root {
+    --primary-red: #c1121f;
+    --primary-blue: #0033cc;
+    --light-gray: #f8f9fa;
+    --dark-gray: #1e1e1e;
+    --card-shadow: rgba(0,0,0,0.15);
+    --transition: 0.3s;
+  }
+
+  /* --- Base Styles --- */
+  body { 
+    margin:0;
+     font-family:'Poppins',sans-serif; 
+     background-color:var(--light-gray); 
+     color:#333; transition:background-color 0.5s, color 0.5s; 
+    }
+  body.dark { 
+    background-color:var(--dark-gray); 
+    color:#f8f9fa; 
+  }
+
+  /* --- Header --- */
+  header { 
+    background: linear-gradient(90deg,var(--primary-red),
+    var(--primary-blue));
+   color:white;
+   padding:30px 20px;
+   display:flex; 
+   align-items:center; 
+   justify-content:center;
+   flex-wrap:wrap; 
+   gap:15px;
+       }
+  header img {
+     height:70px;
+      width:70px;
+     border-radius:50%; 
+     object-fit:cover; 
+     box-shadow:0 0 10px rgba(255,255,255,0.5);
+    }
+  header h1{
+    margin:0;
+    font-size:2.5em;
+    font-weight:700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  }
+  header p{
+      margin: 5px 0 0;
+      font-size: 1.1em;
+      font-weight: 400;
+      opacity: 0.9;
+  }
+
+  /* --- Navigation --- */
+  nav { 
+    position:sticky;
+     top:0; 
+     background-color:var(--primary-blue); 
+     display:flex; justify-content:center;
+      flex-wrap:wrap;
+     z-index:100; 
+     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+  nav a { 
+    color:white; 
+    text-decoration:none; 
+    padding:15px 20px; 
+    font-weight:600; 
+    font-size:1.1em; 
+    transition:var(--transition);
+    display:flex; align-items:center; gap:8px;
+  }
+  nav a:hover{
+    background-color:var(--primary-red);
+  }
+  #cart-nav{
+    position:absolute;
+     right:20px;
+  }
+  #cart-count{
+    background-color:yellow;
+     color:var(--primary-red);
+      border-radius:50%;
+       padding:2px 6px;
+        font-size:0.8em;
+         font-weight:700;
+          margin-left:5px;
+  }
+
+  /* --- General Sections and Title --- */
+  .section-title{
+    text-align:center;
+    color:var(--primary-red);
+    font-size:2.8em;
+    margin-bottom:30px;
+    font-weight:700;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  }
+  .section-subtitle{
+      text-align: center;
+      font-size: 1.2em;
+      color: #666;
+      margin-top: -20px;
+      margin-bottom: 50px;
+  }
+  body.dark .section-subtitle{
+      color: #bbb;
+  }
+
+  /* --- Product Grid & Cards --- */
+  .product-grid{
+    display:grid;
+     grid-template-columns:
+     repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+       max-width:1200px;
+        margin:auto; 
+        padding:20px;
+      }
+  .product-card{
+    background-color:white;
+     border-radius:15px;
+      box-shadow:0 6px 15px var(--card-shadow);
+       overflow:hidden;
+        text-align:center;
+         cursor:pointer;
+         transition:transform var(--transition), box-shadow var(--transition);
+        }
+  body.dark .product-card{
+    background-color:#2c2c2c;
+    box-shadow:0 6px 15px rgba(255,255,255,0.1);
+  }
+  .product-card:hover{
+    transform:translateY(-5px); /* Lift effect */
+     box-shadow:0 10px 20px rgba(0,0,0,0.25);
+    }
+  .product-card img{
+    width:100%;
+     height:220px;
+      object-fit:cover;
+       border-bottom:3px solid var(--primary-red);
+    }
+  .product-card h3{
+    margin:15px 0 5px;
+    color:var(--primary-blue);
+     font-weight:700;
+     font-size:1.4em;
+    }
+  body.dark .product-card h3{
+    color:#ffd700;
+  }
+  .product-card p{
+    padding:0 15px 10px;
+    color:#555;
+    font-size:0.95em;
+  }
+  body.dark .product-card p{
+    color:#ddd;
+  }
+  .product-card-footer{
+    padding:0 15px 15px;
+  }
+  .price-tag{
+    font-size:1.2em;
+     font-weight:700;
+      color:var(--primary-red);
+       display:block;
+        margin-bottom:10px;
+  }
+  body.dark .price-tag{
+    color:#fff;
+  }
+
+  /* --- Modal Styles --- */
+  .modal{
+    display:none;
+     position:fixed;
+      z-index:1000;
+       left:0;
+        top:0; 
+        width:100%;
+         height:100%; 
+         background:rgba(0,0,0,0.8); 
+         justify-content:center;
+          align-items:center;
+        }
+  .modal-content{
+    background:white; 
+    border-radius:15px;
+     max-width:600px; 
+     width:90%; 
+     padding:30px;
+      text-align:center; 
+      position:relative;
+       animation: fadeIn 0.4s ease-out;
+      }
+  body.dark .modal-content{
+    background:#2c2c2c;
+     color:#f8f9fa;
+    }
+  .close-btn{
+    position:absolute;
+     top:15px; 
+     right:20px;
+      font-size:30px;
+       color:#999;
+       cursor:pointer;
+       transition:var(--transition);
+      }
+  .close-btn:hover{
+    color:var(--primary-red);
+    transform:rotate(90deg);
+  }
+  #designImages img{
+    width:100%;
+     height:300px; 
+     object-fit:cover;
+      border-radius:10px;
+       margin-bottom:15px;
+       box-shadow:0 4px 10px rgba(0,0,0,0.3);
+      }
+
+  /* --- Buttons --- */
+  .design-btn, .action-btn, .mode-btn, .esewa-btn{
+    margin:5px;
+     padding:10px 15px; 
+     border:none;
+      border-radius:8px; 
+      cursor:pointer;
+       transition:var(--transition);
+       font-weight:600;
+       display:inline-flex;
+       align-items:center;
+       gap:8px;
+       text-transform:uppercase;
+       white-space: nowrap; /* Prevent text wrapping */
+      }
+  .design-btn{
+    background:var(--primary-blue);
+     color:white;
+     padding:8px 12px;
+     font-size:0.9em;
+    }
+  .design-btn:hover{
+    background:var(--primary-red);
+  }
+  .action-btn{
+    background:var(--primary-red); 
+    color:white;
+     padding:12px 20px;
+      font-size:1.1em;
+      margin-top:20px;
+    }
+  .action-btn:hover{
+    background:var(--primary-blue);
+  }
+  .mode-btn{
+    position:fixed; 
+    bottom:20px; 
+    right:20px; 
+    background:var(--primary-blue);
+     color:white;
+      padding:12px 15px;
+      border-radius:50%;
+       font-size:1.2em;
+        z-index:200;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      }
+  .mode-btn:hover{
+    background:var(--primary-red);
+    transform:scale(1.1);
+  }
+  .esewa-btn{
+    background:green;
+    color:white;
+     font-weight:600;
+    }
+  .esewa-btn:hover{background:#006400;}
+
+  /* --- Sections and Contact Form --- */
+  section{
+    padding:60px 20px;
+  }
+  .contact-form{
+    max-width:700px;
+     margin:40px auto; 
+     background:white;
+      padding:40px;
+       border-radius:15px; 
+       box-shadow:0 8px 16px var(--card-shadow);
+      }
+  body.dark .contact-form{
+    background:#2c2c2c; 
+    color:#f8f9fa;
+  }
+  .contact-form label{
+    display:block; 
+    margin-bottom:8px;
+    font-weight:600;
+  }
+  .contact-form input, .contact-form textarea{
+    width:calc(100% - 22px);
+     padding:10px;
+      margin-bottom:20px;
+       border-radius:8px;
+        border:1px solid #ccc; 
+        font-family:inherit;
+        background-color:var(--light-gray);
+        color:#333;
+      }
+  body.dark .contact-form input, body.dark .contact-form textarea{
+    background-color:#444;
+    color:#f8f9fa;
+    border-color:#555;
+  }
+  .contact-form button{
+    background:var(--primary-red); 
+    color:white;
+     cursor:pointer; 
+     font-size:1.1em;
+      border:none;
+      width:100%;
+      padding:12px;
+      border-radius:8px;
+      font-weight:600;
+      transition:var(--transition);
+    }
+  .contact-form button:hover{
+    background:var(--primary-blue);
+  }
+
+  /* --- Why Choose Us Section --- */
+  #why-choose-us {
+      background-color: var(--primary-blue);
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+  }
+  #why-choose-us .section-title {
+      color: white;
+  }
+  #why-choose-us .section-subtitle {
+      color: #eee;
+  }
+  .features-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+  }
+  .feature-item {
+      flex: 1 1 280px;
+      max-width: 350px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform var(--transition);
+  }
+  .feature-item:hover {
+      transform: translateY(-8px);
+      background-color: rgba(255,255,255,0.15);
+  }
+  .feature-item i {
+      font-size: 3em;
+      color: #ffd700; /* Gold color for icons */
+      margin-bottom: 20px;
+  }
+  .feature-item h3 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: white;
+  }
+  .feature-item p {
+      font-size: 1em;
+      color: #e0e0e0;
+  }
+
+  /* --- Footer --- */
+  footer{
+    background-color:var(--primary-blue); 
+    color:white;
+     text-align:center;
+      padding:30px 20px;
+    }
+  footer p{
+    margin:5px 0;
+  }
+  footer i{
+    margin-right:8px;
+  }
+
+  /* --- Responsive Design --- */
+  @media(max-width:768px){
+    header h1{font-size:1.8em;}
+    header{flex-direction:column; text-align:center;}
+    nav{justify-content:space-around; padding:0;}
+    nav a{padding:12px 10px; font-size:1em;}
+    #cart-nav{position:static; width:100%; text-align:center; padding:10px 0;}
+    .product-grid{grid-template-columns:1fr;}
+    .section-title{font-size:2em;}
+    .section-subtitle{font-size:1em; margin-bottom:30px;}
+    .features-grid{flex-direction:column; align-items:center;}
+  }
+  @media(max-width:480px){
+    .mode-btn{bottom:10px; right:10px;}
+    .modal-content{padding:20px;}
+    header h1{font-size:1.5em;}
+    header p{font-size:0.9em;}
+    .design-btn, .action-btn, .esewa-btn{font-size:0.9em; padding:10px 12px;}
+  }
+
+  /* --- Cart Modal Styles --- */
+  #cartModal .modal-content {
+      text-align: left;
+      max-width: 700px;
+  }
+  .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+  }
+  body.dark .cart-item {
+      border-bottom: 1px solid #333;
+  }
+  .cart-item-details {
+      flex-grow: 1;
+  }
+  .cart-item-details h4 {
+      margin: 0;
+      font-size: 1.1em;
+      color: var(--primary-blue);
+  }
+  body.dark .cart-item-details h4 {
+      color: #ffd700;
+  }
+  .cart-item-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-weight: 600;
+  }
+  .qty-btn {
+      background: #ccc;
+      border: none;
+      padding: 3px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+  }
+  .qty-btn:hover {
+      background: var(--primary-red);
+      color: white;
+  }
+  #cart-total {
+      text-align: right;
+      font-size: 1.3em;
+      font-weight: 700;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 2px solid var(--primary-red);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://placehold.it/70x70?text=Logo" alt="Shrestha Bakery Logo">
+  <div>
+    <h1>Shrestha Bakery and Kirana Pasal</h1>
+    <p>Your one-stop shop for freshly baked delights and daily essentials!</p>
+  </div>
+</header>
+
+<nav>
+  <a href="#cakes"><i class="fas fa-birthday-cake"></i> Cakes</a>
+  <a href="#biscuits"><i class="fas fa-cookie-bite"></i> Biscuits & Snacks</a>
+  <a href="#highlight"><i class="fas fa-star"></i> Our Highlights</a>
+  <a href="#why-choose-us"><i class="fas fa-handshake"></i> Why Choose Us?</a>
+  <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+  <a href="#" id="cart-nav"><i class="fas fa-shopping-cart"></i> Cart (<span id="cart-count">0</span>)</a>
+</nav>
+
+<button class="mode-btn" id="modeToggle" title="Toggle Dark/Light Mode">🌙</button>
+
+<section id="cakes">
+  <h2 class="section-title">Our Exquisite Cakes</h2>
+  <p class="section-subtitle">Baked with passion, perfect for every celebration!</p>
+  <div class="product-grid">
+    <div class="product-card" data-id="101" data-name="Vanilla Cake" data-desc="A timeless classic! Our Vanilla Cake features light, fluffy layers filled with rich, creamy vanilla buttercream. Simple elegance for any occasion." data-price="550" data-designs="https://placehold.it/300x200?text=Vanilla+Design+1,https://placehold.it/300x200?text=Vanilla+Design+2" data-img="https://placehold.it/500x200?text=Vanilla+Cake"></div>
+    <div class="product-card" data-id="102" data-name="Chocolate Cake" data-desc="Indulge in our decadent Chocolate Cake. Moist, rich chocolate layers draped in a velvety smooth chocolate ganache, making it a true chocolate lover's dream." data-price="650" data-designs="image5.jpg,https://placehold.it/300x200?text=Chocolate+Design+2" data-img="image5.jpg"></div>
+     <div class="product-card" data-id="103" data-name="Black Forest Cake" data-desc="Experience the magic of our Black Forest Cake. Layers of chocolate sponge, whipped cream, cherries, and chocolate shavings create a harmonious symphony of flavors." data-price="550" data-designs="image1.jpg,https://placehold.it/300x200?text=BlackForest+Design+2" data-img="image1.jpg"></div>
+  </div>
+</section>
+
+<section id="biscuits">
+  <h2 class="section-title">Freshly Baked Biscuits & Snacks</h2>
+  <p class="section-subtitle">Perfect companions for your tea or coffee, baked fresh daily.</p>
+  <div class="product-grid"> <div class="product-grid">
+    <div class="product-card" data-name="Doughnut" data-desc="Sweet and fluffy." data-price="Rs 25" data-designs="c:\Users\Acer\Downloads\Colorful & Delicious Homemade Donuts - Your New Favorite Sweet Treat.jpg" data-img="c:\Users\Acer\Downloads\Colorful & Delicious Homemade Donuts - Your New Favorite Sweet Treat.jpg"></div>
+    <div class="product-card" data-name="Bun/Paurote" data-desc="Sweet and fluffy." data-price="Rs 25" data-designs="c:\Users\Acer\Downloads\Homemade Hamburger Buns - Elevate your burger game with these delicious Homemade Hamburger Buns_ These brioche-like buns are light in texture and high in flavour_.jpg" data-img="c:\Users\Acer\Downloads\Homemade Hamburger Buns - Elevate your burger game with these delicious Homemade Hamburger Buns_ These brioche-like buns are light in texture and high in flavour_.jpg"></div>
+  </div>
+    <div class="product-card" data-id="201" data-name="Doughnut Assortment" data-desc="Our delicious doughnuts are fluffy, sweet, and come in a variety of glazes and sprinkles. A delightful treat for any time of day!" data-price="25" data-designs="image4.jpg,https://placehold.it/300x200?text=Doughnut+Design+2" data-img="image4.jpg"></div>
+    <div class="product-card" data-id="202" data-name="Sweet Buns / Paurote" data-desc="Soft, light, and subtly sweet, our buns (paurote) are perfect for a quick snack or as a versatile accompaniment to any meal. Baked to golden perfection." data-price="25" data-designs="https://placehold.it/300x200?text=Bun+Design+1,https://placehold.it/300x200?text=Bun+Design+2" data-img="https://placehold.it/500x200?text=Bun"></div>
+  </div>
+</section>
+
+<section id="highlight">
+  <h2 class="section-title">Bakery & Kirana Highlights</h2>
+  <p class="section-subtitle">Discover our most loved items and daily essentials!</p>
+  <div class="product-grid">
+    <div class="product-card" data-id="301" data-name="Crispy Cream Roll" data-desc="A beloved classic! Enjoy our perfectly flaky pastry filled with luscious, sweet cream. A delightful crunch followed by creamy bliss." data-price="200" data-designs="image2.jpg,https://placehold.it/300x200?text=CreamRoll+Design+2" data-img="image2.jpg"></div>
+     <div class="product-card" data-id="302" data-name="Freshly Baked Bread" data-desc="Our daily baked bread is soft, wholesome, and perfect for sandwiches or toast. Made with quality ingredients for a nutritious start to your day." data-price="200" data-designs="image3.jpg,https://placehold.it/300x200?text=Bread+Design+2" data-img="image3.jpg"></div>
+     <div class="product-card" data-id="303" data-name="Daily Kirana Essentials" data-desc="Beyond bakery, find a wide range of essential groceries, spices, snacks, and household items. Quality and convenience, all under one roof." data-price="Varies" data-designs="https://placehold.it/300x200?text=Kirana+1,https://placehold.it/300x200?text=Kirana+2" data-img="https://placehold.it/500x200?text=Kirana+Store"></div>
+  </div>
+</section>
+
+<section id="why-choose-us">
+    <h2 class="section-title">Why Choose Shrestha Bakery?</h2>
+    <p class="section-subtitle">Committed to quality, freshness, and your satisfaction.</p>
+    <div class="features-grid">
+        <div class="feature-item">
+            <i class="fas fa-leaf"></i>
+            <h3>Fresh Ingredients</h3>
+            <p>We use only the finest and freshest ingredients to ensure every bite is a delight.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-cookie"></i>
+            <h3>Baked with Love</h3>
+            <p>Our skilled bakers pour their heart into every creation, guaranteeing exceptional taste.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-truck"></i>
+            <h3>Reliable Delivery</h3>
+            <p>Enjoy our delicious treats and essentials delivered fresh to your doorstep.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-hand-holding-heart"></i>
+            <h3>Customer Satisfaction</h3>
+            <p>Your happiness is our priority. We strive to provide the best products and service.</p>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+  <h2 class="section-title">Contact Us & Custom Order</h2>
+  <p class="section-subtitle">For custom cake designs, large orders, or general inquiries, please use the form below. We'd love to hear from you!</p>
+  <form class="contact-form" action="https://formspree.io/f/mblpbyoa" method="POST" enctype="multipart/form-data">
+    <label for="email"><i class="fas fa-at"></i> Your Email:</label>
+    <input type="email" name="email" id="email" required>
+    <label for="message"><i class="fas fa-comment-dots"></i> Message/Custom Request Details:</label>
+    <textarea name="message" id="message" rows="6" placeholder="Tell us about your custom cake idea, bulk order, or any questions you have." required></textarea>
+    <label for="file"><i class="fas fa-camera"></i> Add a photo or video (e.g., design reference, optional):</label>
+    <input type="file" name="file" id="file" accept="image/*,video/*">
+    <button type="submit"><i class="fas fa-paper-plane"></i> Send Inquiry</button>
+  </form>
+</section>
+
+<footer>
+  <p><i class="fas fa-phone"></i> 9817335856 | <i class="fas fa-map-marker-alt"></i> Koshi Province, Nepal</p>
+  <p>© 2025 Shrestha Bakery and Kirana Pasal | All Rights Reserved</p>
+</footer>
+
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <span class="close-btn" id="closeModal">&times;</span>
+    <div id="designImages"></div>
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+    <div id="designButtons" style="margin-bottom: 20px;"></div>
+    
+    <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-bottom:20px;">
+        <label for="quantityInput" style="font-weight:600;">Quantity:</label>
+        <input type="number" id="quantityInput" value="1" min="1" style="width:60px; padding:8px; border-radius:5px; text-align:center;">
+        <h3 id="modalPrice" style="margin:0;"></h3>
+    </div>
+
+    <button class="action-btn" id="addToCartBtn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+    <button class="esewa-btn" id="esewaBtn"><i class="fas fa-qrcode"></i> Pay with eSewa</button>
+    
+    <div id="esewaQR" style="display:none; margin-top:20px; border: 1px solid #ddd; padding: 10px; border-radius: 10px;">
+      <p style="color:var(--primary-red); font-weight:700;">Scan to Pay</p>
+      <img src="https://placehold.it/200x200?text=Esewa+QR" alt="Esewa QR" style="width:200px; height:200px; border-radius:10px; object-fit:cover;">
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="cartModal">
+    <div class="modal-content">
+        <span class="close-btn" id="closeCartModal">&times;</span>
+        <h2 class="section-title" style="margin-top:0; margin-bottom: 20px;">Your Shopping Cart</h2>
+        <div id="cart-items-container">
+            <p id="empty-cart-message" style="text-align:center; font-style:italic;">Your cart is empty.</p>
+        </div>
+        <div id="cart-total"></div>
+        <button class="action-btn" id="checkoutBtn"><i class="fab fa-whatsapp"></i> Proceed to Checkout (WhatsApp)</button>
+    </div>
+</div>
+
+
+<script>
+// --- Global Elements ---
+const productModal = document.getElementById("productModal");
+const cartModal = document.getElementById("cartModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDesc");
+const modalPrice = document.getElementById("modalPrice");
+const designImages = document.getElementById("designImages");
+const designButtons = document.getElementById("designButtons");
+const closeModal = document.getElementById("closeModal");
+const closeCartModal = document.getElementById("closeCartModal");
+const addToCartBtn = document.getElementById("addToCartBtn");
+const quantityInput = document.getElementById("quantityInput");
+const modeToggle = document.getElementById("modeToggle");
+const esewaBtn = document.getElementById("esewaBtn");
+const esewaQR = document.getElementById("esewaQR");
+const cartNav = document.getElementById("cart-nav");
+const cartCountElement = document.getElementById("cart-count");
+const cartItemsContainer = document.getElementById("cart-items-container");
+const cartTotalElement = document.getElementById("cart-total");
+const checkoutBtn = document.getElementById("checkoutBtn");
+const emptyCartMessage = document.getElementById("empty-cart-message");
+
+let slideshowInterval;
+let currentDesignIndex = 0;
+let currentDesigns = [];
+let currentProduct = {};
+
+// --- Cart Logic (Local Storage) ---
+let cart = JSON.parse(localStorage.getItem('shresthaBakeryCart')) || [];
+
+function saveCart() {
+    localStorage.setItem('shresthaBakeryCart', JSON.stringify(cart));
+    updateCartDisplay();
+}
+
+function updateCartDisplay() {
+    cartCountElement.textContent = cart.reduce((total, item) => total + item.qty, 0);
+    renderCart();
+}
+
+function addToCart(product) {
+    const existingItem = cart.find(item => item.id === product.id);
+    if (existingItem) {
+        existingItem.qty += product.qty;
+    } else {
+        cart.push(product);
+    }
+    saveCart();
+    // Show confirmation
+    alert(`${product.name} x${product.qty} added to cart!`);
+    productModal.style.display = 'none';
+    clearInterval(slideshowInterval);
+}
+
+function renderCart() {
+    cartItemsContainer.innerHTML = '';
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    
+    if (cart.length === 0) {
+        emptyCartMessage.style.display = 'block';
+        cartTotalElement.style.display = 'none';
+        checkoutBtn.style.display = 'none';
+        return;
+    } else {
+        emptyCartMessage.style.display = 'none';
+        cartTotalElement.style.display = 'block';
+        checkoutBtn.style.display = 'block';
+    }
+
+    cart.forEach(item => {
+        const itemElement = document.createElement('div');
